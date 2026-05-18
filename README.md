@@ -58,6 +58,8 @@ Create a `.env` file in the root directory with the following variables:
 - `PORT`: Server port (default: 8080)
 - Other environment-specific variables
 
-## License
+## Check app is running or not
 
-ISC
+```
+http://localhost:8080/api/v1
+```
