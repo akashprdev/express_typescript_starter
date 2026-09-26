@@ -1,10 +1,10 @@
-import { Response } from 'express';
+import type { Response } from 'express';
 
 interface SuccessOptions<T> {
   res: Response;
   statusCode?: number;
   message?: string;
-  data?: T;
+  data?: T | null;
 
   page?: number;
   limit?: number;
@@ -15,10 +15,13 @@ interface ErrorOptions {
   res: Response;
   statusCode?: number;
   message?: string;
-  errors?: string | Record<string, string[]> | null;
+  errors?: unknown;
 }
 
-export type HttpError = Error & { statusCode?: number };
+export type HttpError = Error & {
+  statusCode?: number;
+  errors?: unknown;
+};
 
 export const sendSuccess = <T>({
   res,

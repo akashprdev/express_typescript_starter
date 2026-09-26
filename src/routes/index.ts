@@ -1,9 +1,14 @@
 import { Router } from 'express';
 import auth from '@/features/auth/auth.route';
+import { apiLimiter, authLimiter } from '@/utils/rateLimit';
 
 const router = Router();
 
-router.get('/', (req, res) => {
+// Apply general limiter to all routes as baseline
+router.use(apiLimiter);
+
+// Health check — no auth, no extra limiter needed
+router.get('/', (_req, res) => {
   res.status(200).json({
     success: true,
     app: 'Express TypeScript Starter API',
@@ -13,7 +18,9 @@ router.get('/', (req, res) => {
     timestamp: new Date().toISOString(),
   });
 });
-// Auth routes
-router.use('/auth', auth);
+
+// Feature routes with appropriate limiters
+// Strict: 5 req / 10min
+router.use('/auth', authLimiter, auth);
 
 export default router;
